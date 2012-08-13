@@ -54,13 +54,6 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 		foreach ($res as $col) {
 			return $col;
 		}
-
-		// using 'find()' as is
-		$res = $this->find($id);
-		return $res[0]['name'];
-
-		// using Enno-extended 'find()'
-		return $this->find($id);
 	}
 
 	/**
