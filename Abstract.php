@@ -41,15 +41,46 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 	 * Returns set of rows, if multiple keys are queried. Otherwise returns the
 	 * row identified by the key.
 	 *
+	 * To check if something was found at all use:
+	 *   $res = $this->find($id);
+	 *   if (count($res) > 0) { // row exists }
+	 *
 	 * @param mixed $keys Single value or array of primary keys.
+	 * @param string|array $columns Columns to retrieve.
 	 * @return Zend_Db_Table_Row|Zend_Db_Table_Rowset_Abstract
 	 */
-	public function find($keys)
+	public function find($keys, $columns = '')
 	{
-		$res = parent::find($keys);
+		// do we have limited columns to retrieve?
+		if ($columns == '') {
 
-		if (is_array($keys))
+			// if not, simply do a "normal" find on the parent
+			$res = parent::find($keys);
+
+			// if we have limited columns
+		} else {
+
+			// init a query with columns
+			$query = $this->selectColumns($columns);
+
+			// set up primary key as array if single value
+			$vals = is_array($keys)
+				? $keys
+				: array($this->getPrimaryKey() => $keys);
+
+			// append where clauses
+			foreach ($vals as $key => $val)
+				$query->where("$key = ?", $val);
+
+			// fetch result
+			$res = $this->fetchAll($query);
+		}
+
+		// if we have multiple keys or an empty result: return rowset
+		if (is_array($keys) || $res->count() < 1)
 			return $res;
+
+		// return first row of result
 		return $res[0];
 	}
 
