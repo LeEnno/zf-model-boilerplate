@@ -6,7 +6,9 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 	 */
 	protected function _setupTableName()
 	{
-		$this->_name =  Zend_Registry::get('Db_Prefix') . $this->_name;
+		$registryPrefix = 'Db_Prefix';
+		if (Zend_Registry::isRegistered($registryPrefix))
+			$this->_name =  Zend_Registry::get($registryPrefix) . $this->_name;
 		parent::_setupTableName();
 	}
 
