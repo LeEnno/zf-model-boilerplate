@@ -13,6 +13,18 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 	}
 
 	/**
+	 * Get primary key.
+	 *
+	 * Only works when primary key doesn't consist of more than one column.
+	 *
+	 * @return mixed
+	 */
+	public function getPrimaryKey()
+	{
+		return $this->_primary[1];
+	}
+
+	/**
 	 * Get name for joined table.
 	 *
 	 * This function obsoletes the need to hardcode the name of a joined table.
