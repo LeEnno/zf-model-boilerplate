@@ -92,13 +92,13 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 	 */
 	public function fetchOne($query)
 	{
-		$res = parent::fetchRow($query);
-		if (count($res) < 1)
+		$row = $this->fetchRow($query);
+
+		if (count($row) < 1)
 			return false;
 
-		foreach ($res as $col) {
+		foreach ($row as $col) // $row[0][0] won't work
 			return $col;
-		}
 	}
 
 	/**
