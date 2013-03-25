@@ -3,6 +3,8 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 {
 	/**
 	 * Prepend table prefix.
+	 *
+	 * By default table prefix must be in registry with key 'Db_Prefix'.
 	 */
 	protected function _setupTableName()
 	{
@@ -57,7 +59,7 @@ abstract class Application_Model_Abstract extends Zend_Db_Table_Abstract
 			// if not, simply do a "normal" find on the parent
 			$res = parent::find($keys);
 
-			// if we have limited columns
+		// if we have limited columns
 		} else {
 
 			// init a query with columns
